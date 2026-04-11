@@ -1,6 +1,5 @@
 import { Hono } from 'hono';
-import { serveStatic } from 'hono/serve-static';
-
+import { serveStatic } from 'hono/serve-static'
 const app = new Hono();
 
 // Static file

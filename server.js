@@ -1,21 +1,24 @@
 import { serve } from '@hono/node-server';
-import { serveStatic } from '@hono/node-server/serve-static';
 import { Hono } from 'hono';
+import { readFile } from 'fs/promises';
 import apiApp from './api/index.js';
 
 const app = new Hono();
 
-app.route('/', apiApp);
-// 1. Melayani file statis (Frontend)
-app.use('/*', serveStatic({ root: './public' }));
+// API
+app.route('/api', apiApp);
 
-// 2. Gunakan Logika API dari api/index.js
+// Homepage (tanpa serveStatic)
+app.get('/', async (c) => {
+  const html = await readFile('./public/index.html', 'utf-8');
+  return c.html(html);
+});
 
-const port = 4003;
+const port = 5000;
 console.log(`Server running on http://localhost:${port}`);
 
 serve({
-    fetch: app.fetch,
-    port
+  fetch: app.fetch,
+  port
 });
 
