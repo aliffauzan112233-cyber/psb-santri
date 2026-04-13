@@ -27,6 +27,7 @@ try{
   const schema = z.object({
     nama: z.string().min(3, "Nama mininal 3 karakter"),
     gender: z.enum(['Ikhwan', "Akhwat"], { errorMap: () => ({ message: "Pilih gender yang valid"}) }),
+    hafalan: z.coerce.number().min(0, "hafalan tidak boleh minus"),
     wali: z.string().min(3, "Nama wali wajib diisi"),
     'g-recaptcha-response': z.string().min(1, "Centang Captcha terlebih dahulu!")
   });
@@ -44,7 +45,7 @@ try{
   const verify = await fetch('https://www.google.com/recaptcha/api/siteverify', {
     method: 'POST',
     body: formData,
-    heades: { ' Content-Type': 'aplication/x-www-form-urlencoded' }
+    heades: { 'Content-Type': 'aplication/x-www-form-urlencoded' }
   });
 
   const captchaRes = await verify.json();
@@ -62,7 +63,7 @@ try{
 
   return c.json({ message: "Pendaftaran Berhasil!"});
 
-}catch(error) {
+} catch(error) {
   return c.json({ error: "terjadi Kesalahan Sistem"}, 500);
 }
 });
