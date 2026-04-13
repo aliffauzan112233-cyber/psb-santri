@@ -1,18 +1,16 @@
 import { serve } from '@hono/node-server';
+import { serveStatic } from 'hono/serve-static';
 import { Hono } from 'hono';
-import { readFile } from 'fs/promises';
+
 import apiApp from './api/index.js';
 
 const app = new Hono();
 
-// API
+// API route
 app.route('/api', apiApp);
 
-// Homepage (tanpa serveStatic)
-app.get('/', async (c) => {
-  const html = await readFile('./public/index.html', 'utf-8');
-  return c.html(html);
-});
+// Static files
+app.use('/*', serveStatic({ root: './public' }));
 
 const port = 5000;
 console.log(`Server running on http://localhost:${port}`);
@@ -20,5 +18,6 @@ console.log(`Server running on http://localhost:${port}`);
 serve({
   fetch: app.fetch,
   port
+
 });
 
