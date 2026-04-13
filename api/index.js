@@ -1,5 +1,6 @@
 import { Hono } from 'hono';
 import { serveStatic } from '@hono/node-server/serve-static';
+import { process } from 'zod/v4/core';
 
 const app = new Hono();
 
@@ -17,6 +18,54 @@ app.use("*", async (c, next) => {
 
 // Static file
 app.use('/*', serveStatic({ root: './public' }));
+
+app.post('/api/submit', async (c) => { 
+try{
+  const body = await c.req.parseBody();
+
+  // 1 validasi input dengan zod
+  const schema = z.object({
+    nama: z.string().min(3, "Nama mininal 3 karakter"),
+    gender: z.enum(['Ikhwan', "Akhwat"], { errorMap: () => ({ message: "Pilih gender yang valid"}) }),
+    wali: z.string().min(3, "Nama wali wajib diisi"),
+    'g-recaptcha-response': z.string().min(1, "Centang Captcha terlebih dahulu!")
+  });
+
+  const parse = schema.safeParse(body);
+  if (!parse.success){
+    return c.json({ error: parse.error.errors[0].message }, 400);
+  }
+
+  // 2 verivikasi Captcha ke server Google
+  const formData = new URLSearchParams();
+  formData.append('secret', process.env.RECAPTCHA_SECRET);
+  formData.append('response', parse.data['g-recaptcha-response']);
+
+  const verify = await fetch('https://www.google.com/recaptcha/api/siteverify', {
+    method: 'POST',
+    body: formData,
+    heades: { ' Content-Type': 'aplication/x-www-form-urlencoded' }
+  });
+
+  const captchaRes = await verify.json();
+  if (!captchaRes.success){
+    return c.json({ error: "Verifikasi Captcha Gagal" }, 400);
+  }
+
+  // 3 Simpan ke Database
+  await db.insert(santri).value({
+    nama: parse.data.nama,
+    gender: parse.data.gender,
+    hafalan: parse.data.hafalan,
+    wali: parse.data.wali
+  });
+
+  return c.json({ message: "Pendaftaran Berhasil!"});
+
+}catch(error) {
+  return c.json({ error: "terjadi Kesalahan Sistem"}, 500);
+}
+});
 
 // API
 app.get('/api/hello', (c) => {
