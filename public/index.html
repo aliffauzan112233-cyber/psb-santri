@@ -4,9 +4,89 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PSB Santri</title>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
-    <h1>Selamat Datang di Sistem PSB</h1>
-    <p>Server Hono berhasil melayani file statis!</p>
+    <h1>Formulir Pendaftaran Santri Baru</h1>
+    <p>Silahkan isi data calon santri dengan benar</p>
+    <hr>
+
+    <form id="formPSB">
+        <div>
+            <label>Nama Lengkap</label><br>
+            <input type="text" name="nama" placeholder="Contoh: Ahmad Fauzi" required>
+        </div><br>
+
+        <div>
+            <label>Jenis Kelamin</label><br>
+            <select name="gender" required>
+                <option value="">--Pilih--</option>
+                <option value="Ikhwan">Ikhwan (Laki-Laki)</option>
+                <option value="Akhwat">Akhwat (Perempuan)</option>
+            </select>
+        </div><br>
+
+        <div>
+            <label>Jumlah Hafalan</label><br>
+            <input type="number" name="hafalan" value="0" min="0" max="30">
+        </div><br>
+
+        <div>
+            <label>Nama Wali:</label><br>
+            <input type="text" name="wali" placeholder="Nama Ayah/Ibu" required>
+        </div><br>
+
+        <div class="g-recaptcha" data-sitekey="6LdBlLEsAAAAAN5U3AUYdHDZVheI1vgxERbszZlj"></div>
+        <br>
+
+        <button type="submit" id="btnSubmit">Kirim Pendaftaran</button>
+    </form>
+
+    <h3 id="statusPesan"></h3>
+
+    <script>
+  const form = document.getElementById('formPSB');
+  const statusPesan = document.getElementById('statusPesan');
+
+  form.onsubmit = async (e) => {
+    e.preventDefault(); // Mencegah reload
+
+    statusPesan.innerText = "Sedang memproses...";
+    statusPesan.style.color = "blue";
+
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch(' http://localhost:5000/api/submit', {
+        method: 'POST',
+        body: formData
+      });
+
+      const hasil = await response.json();
+
+      if (response.ok) {
+        statusPesan.innerText = "Berhasil: " + hasil.message;
+        statusPesan.style.color = "green";
+        form.reset();
+
+        // Cek kalau pakai reCAPTCHA
+        if (typeof grecaptcha !== "undefined") {
+          grecaptcha.reset();
+        }
+
+      } else {
+        statusPesan.innerText = "Gagal: " + (hasil.error || "Terjadi kesalahan");
+        statusPesan.style.color = "red";
+      }
+
+    } catch (err) {
+      statusPesan.innerText = "Gagal menghubungi server backend";
+      statusPesan.style.color = "red";
+      console.error(err);
+    }
+  };
+
+  
+</script>
 </body>
 </html>
