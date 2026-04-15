@@ -1,8 +1,10 @@
+import 'dotenv/config';
 import { z } from 'zod';
 import { Hono } from 'hono';
 import { serveStatic } from '@hono/node-server/serve-static';
-import { process } from 'zod/v4/core';
-import 'dotenv/config';
+import { db } from '../db/index.js';
+import { santri } from '../db/schema.js';
+
 
 const app = new Hono();
 

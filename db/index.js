@@ -1,6 +1,7 @@
 import { z } from 'zod';
-import { db } from './db/index.js';
-import { santri } from './db/sc hema.js';
+import { santri } from './schema.js';
+import { drizzle } from 'drizzle-orm/node-postgres'
+
 
 export default (app) => {
   app.post('/api/submit', async (c) => {
