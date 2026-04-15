@@ -5,7 +5,7 @@ import { process } from 'zod/v4/core';
 const app = new Hono();
 
 app.use("*", async (c, next) => {
-    c.header("Access-Control-Allow-Origin", "http://127.0.0.1:3000");
+    c.header("Access-Control-Allow-Origin", "http://127.0.0.1:3001");
     c.header("Access-Control-Allow-Headers", "Content-Type");
     c.header("Access-Control-Allow-methods", "POST, GET, OPTIONS");
 
@@ -19,7 +19,7 @@ app.use("*", async (c, next) => {
 // Static file
 app.use('/*', serveStatic({ root: './public' }));
 
-app.post('/api/submit', async (c) => { 
+app.post('/submit', async (c) => { 
 try{
   const body = await c.req.parseBody();
 
@@ -64,6 +64,7 @@ try{
   return c.json({ message: "Pendaftaran Berhasil!"});
 
 } catch(error) {
+  console.log(error)
   return c.json({ error: "terjadi Kesalahan Sistem"}, 500);
 }
 });
@@ -74,7 +75,7 @@ app.get('/api/hello', (c) => {
 });
 
 // Error handler
-app.onError((err, c) => {
+app.onError-((err, c) => {
   console.error(err);
   return c.json({ error: 'Terjadi kesalahan internal' }, 500);
 });

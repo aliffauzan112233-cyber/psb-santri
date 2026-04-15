@@ -9,14 +9,15 @@ const app = new Hono();
 // API route
 app.route('/api', apiApp);
 
+
 // Static files (INI PENTING)
 app.use('/*', serveStatic({ root: './public' }));
 
-const port = 5000;
+const port = 3000;
 console.log(`Server running on http://localhost:${port}`);
 
 serve({
   fetch: app.fetch,
-  port
+  port: 3000
 });
 

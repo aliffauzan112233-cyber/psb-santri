@@ -45,43 +45,47 @@
     <h3 id="statusPesan"></h3>
 
    <script>
-  const form = document.getElementById('formPSB');
-  const statusPesan = document.getElementById('statusPesan');
+const form = document.getElementById('formPSB');
+const statusPesan = document.getElementById('statusPesan');
 
-  form.onsubmit = async (e) => {
-    e.preventDefault();
+form.onsubmit = async (e) => {
+  e.preventDefault();
 
-    statusPesan.innerText = "Sedang memproses...";
-    statusPesan.style.color = "blue";
+  // ✅ cek captcha
+  const captcha = grecaptcha.getResponse();
+  if (!captcha) {
+    alert('Silakan centang CAPTCHA dulu!');
+    return;
+  }
 
-    const formData = new FormData(form);
-    // const data = Object.fromEntries(formData.entries());
+  statusPesan.innerText = "Sedang memproses...";
+  statusPesan.style.color = "blue";
 
-    try {
-      const response = await fetch('/api/submit', {
-        method: 'POST',
-        body: formData
-      });
+  const formData = new FormData(form);
 
-      if (!response.ok) {
-        const text = await response.text();
-        throw new Error(text);
-      }
+  try {
+    const response = await fetch('http://localhost:3000/api/api/submit', {
+      method: 'POST',
+      body: formData
+    });
 
-      const hasil = await response.json();
-
-      statusPesan.innerText = "Berhasil: " + hasil.message;
-      statusPesan.style.color = "green";
-      form.reset();
-
-    } catch (err) {
-      statusPesan.innerText = "Gagal: " + err.message;
-      statusPesan.style.color = "red";
-      console.error(err);
+    if (!response.ok) {
+      const text = await response.text();
+      throw new Error(text);
     }
-  };
 
+    const hasil = await response.json();
 
+    statusPesan.innerText = "Berhasil: " + hasil.message;
+    statusPesan.style.color = "green";
+    form.reset();
+    grecaptcha.reset();
+
+  } catch (err) {
+    statusPesan.innerText = "Gagal: " + err.message;
+    statusPesan.style.color = "red";
+  }
+};
 </script>
 </body>
 </html>
