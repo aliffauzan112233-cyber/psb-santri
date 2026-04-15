@@ -1,6 +1,8 @@
+import { z } from 'zod';
 import { Hono } from 'hono';
 import { serveStatic } from '@hono/node-server/serve-static';
 import { process } from 'zod/v4/core';
+import 'dotenv/config';
 
 const app = new Hono();
 
@@ -36,12 +38,12 @@ try{
   if (!parse.success){
     return c.json({ error: parse.error.errors[0].message }, 400);
   }
-
+  const secret = process.env.RECAPTCHA_SECRET
   // 2 verivikasi Captcha ke server Google
   const formData = new URLSearchParams();
-  formData.append('secret', process.env.RECAPTCHA_SECRET);
+  formData.append('secret',secret);
   formData.append('response', parse.data['g-recaptcha-response']);
-
+  
   const verify = await fetch('https://www.google.com/recaptcha/api/siteverify', {
     method: 'POST',
     body: formData,
@@ -52,7 +54,7 @@ try{
   if (!captchaRes.success){
     return c.json({ error: "Verifikasi Captcha Gagal" }, 400);
   }
-
+  
   // 3 Simpan ke Database
   await db.insert(santri).value({
     nama: parse.data.nama,
@@ -60,7 +62,7 @@ try{
     hafalan: parse.data.hafalan,
     wali: parse.data.wali
   });
-
+  
   return c.json({ message: "Pendaftaran Berhasil!"});
 
 } catch(error) {
