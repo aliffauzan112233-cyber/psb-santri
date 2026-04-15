@@ -22,9 +22,9 @@ async function main() {
             password: hashed
         });
 
-        console.log('✅ Seed Selesai!');
+        console.log('Seed Selesai!');
     } catch (error){
-        console.error('❌ Seed Gagal:', error);
+        console.error('Seed Gagal:', error);
     } finally {
         process.exit(0);
     }

@@ -9,7 +9,7 @@ import { santri } from '../db/schema.js';
 const app = new Hono();
 
 app.use("*", async (c, next) => {
-    c.header("Access-Control-Allow-Origin", "http://127.0.0.1:3001");
+    c.header("Access-Control-Allow-Origin", "*");
     c.header("Access-Control-Allow-Headers", "Content-Type");
     c.header("Access-Control-Allow-methods", "POST, GET, OPTIONS");
 
@@ -58,7 +58,8 @@ try{
   }
   
   // 3 Simpan ke Database
-  await db.insert(santri).value({
+
+  await db.insert(santri).values({
     nama: parse.data.nama,
     gender: parse.data.gender,
     hafalan: parse.data.hafalan,
