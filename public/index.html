@@ -51,7 +51,7 @@ const statusPesan = document.getElementById('statusPesan');
 form.onsubmit = async (e) => {
   e.preventDefault();
 
-  // ✅ cek captcha
+  // cek captcha
   const captcha = grecaptcha.getResponse();
   if (!captcha) {
     alert('Silakan centang CAPTCHA dulu!');
