@@ -51,24 +51,26 @@ const statusPesan = document.getElementById('statusPesan');
 form.onsubmit = async (e) => {
   e.preventDefault();
 
-  // cek captcha
+  // cek captcha // Sistem mengecek apakah user sudah mencentang Google reCAPTCHA. Jika belum, proses dihentikan dengan perintah return dan muncul peringatan.
   const captcha = grecaptcha.getResponse();
   if (!captcha) {
     alert('Silakan centang CAPTCHA dulu!');
     return;
   }
 
+  // Memberikan feedback visual ke user bahwa data sedang dikirim.
   statusPesan.innerText = "Sedang memproses...";
   statusPesan.style.color = "blue";
 
-  const formData = new FormData(form);
+  const formData = new FormData(form); // Secara otomatis mengambil semua nilai input yang ada di dalam form berdasarkan atribut name-nya.
 
   try {
     const response = await fetch('http://localhost:3000/api/submit', {
-      method: 'POST',
-      body: formData
+      method: 'POST', // Menentukan metode pengiriman data.
+      body: formData // Isi paket yang dikirim adalah data form tadi.
     });
 
+    // Penanganan Respon Server
     if (!response.ok) {
       const text = await response.text();
       throw new Error(text);
@@ -76,10 +78,14 @@ form.onsubmit = async (e) => {
 
     const hasil = await response.json();
 
+    // Finalisasi (Sukses atau Gagal)
+
     statusPesan.innerText = "Berhasil: " + hasil.message;
     statusPesan.style.color = "green";
     form.reset();
     grecaptcha.reset();
+
+    window.location.href = 'success.html';
 
   } catch (err) {
     statusPesan.innerText = "Gagal: " + err.message;

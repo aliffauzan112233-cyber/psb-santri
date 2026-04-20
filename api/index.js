@@ -36,10 +36,23 @@ try{
     'g-recaptcha-response': z.string().min(1, "Centang Captcha terlebih dahulu!")
   });
 
+  
+
   const parse = schema.safeParse(body);
   if (!parse.success){
     return c.json({ error: parse.error.errors[0].message }, 400);
   }
+
+  console.log(!parse.data.gender)
+  if(!(parse.data.gender === 'Ikhwan')){
+    return c.json({ error: "Peserta harus Ikhwan"}, 400);
+  } 
+
+  if(!(parse.data.hafalan >= 1 )){
+    return c.json({ error: "hafalan minimal 1 juz" }, 400)
+  }
+
+
   const secret = process.env.RECAPTCHA_SECRET
   // 2 verivikasi Captcha ke server Google
   const formData = new URLSearchParams();
