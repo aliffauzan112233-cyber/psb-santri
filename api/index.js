@@ -31,8 +31,9 @@ try{
   const schema = z.object({
     nama: z.string().min(3, "Nama mininal 3 karakter"),
     gender: z.enum(['Ikhwan', "Akhwat"], { errorMap: () => ({ message: "Pilih gender yang valid"}) }),
-    hafalan: z.coerce.number().min(0, "hafalan tidak boleh minus"),
-    wali: z.string().min(3, "Nama wali wajib diisi"),
+    hafalan: z.coerce.number().min(0, "hafalan tidak boleh minus."),
+    wali: z.string().min(3, "Nama wali wajib diisi."),
+    whatsapp: z.string().max(13, "No WhatsApp tidak boleh lebih dari 13"),
     'g-recaptcha-response': z.string().min(1, "Centang Captcha terlebih dahulu!")
   });
 
@@ -49,7 +50,11 @@ try{
   } 
 
   if(!(parse.data.hafalan >= 1 )){
-    return c.json({ error: "hafalan minimal 1 juz" }, 400)
+    return c.json({ error: "Hafalan minimal 1 juz" }, 400)
+  }
+
+  if(!(parse.data.whatsapp >=10 )){
+    return c.json({ error: "No WhatsAPP tidak boleh kurang dari 10" }, 400)
   }
 
 
@@ -76,9 +81,11 @@ try{
     nama: parse.data.nama,
     gender: parse.data.gender,
     hafalan: parse.data.hafalan,
-    wali: parse.data.wali
+    wali: parse.data.wali,
+    whatsapp: parse.data.whatsapp
   });
   
+
   return c.json({ message: "Pendaftaran Berhasil!"});
 
 } catch(error) {
