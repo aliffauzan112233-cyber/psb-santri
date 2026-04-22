@@ -16,14 +16,15 @@ async function main() {
             wali: "Bapak Hidayat"
         });
 
-        const hashed = await bcrypt.hash('admin123', 10);
+        const hashed = await bcrypt.hash("admin123", 10);
+
         await db.insert(admins).values({
-            username: "adminpondok",
+            username: "admin",
             password: hashed
         });
 
         console.log('Seed Selesai!');
-    } catch (error){
+    } catch (error) {
         console.error('Seed Gagal:', error);
     } finally {
         process.exit(0);
