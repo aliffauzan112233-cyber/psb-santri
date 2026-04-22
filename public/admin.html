@@ -34,37 +34,38 @@
     </div>
 
     <script>
-async function login() {
-    const formData = new FormData();
-    formData.append('username', document.getElementById('user').value);
-    formData.append('password', document.getElementById('pass').value);
-    console.log('form:', formData);
-    const res = await fetch('/api/login', {
-        method: 'POST',
-        body: formData,
-        credentials: 'include'
-    });
+        async function login() {
+            const formData = new FormData();
+            formData.append('username', document.getElementById('user').value);
+            formData.append('password', document.getElementById('pass').value);
+            console.log('form:', formData);
+            
+            const res = await fetch('/api/login', {
+                method: 'POST',
+                body: formData,
+                credentials: 'include'
+            });
 
-    if (res.ok){
-        checkAuth();
-    } else{
-        alert("Login Gagal!");
-    }
-}
+            if (res.ok) {
+                checkAuth();
+            } else {
+                alert("Login Gagal!");
+            }
+        }
 
-async function checkAuth(){
-    const res = await fetch('/api/admin/santri', {
-        credentials: 'include'
-    });
+        async function checkAuth() {
+            const res = await fetch('/api/admin/santri', {
+                credentials: 'include'
+            });
 
-    if (res.ok) {
-        const data = await res.json();
+            if (res.ok) {
+                const data = await res.json();
 
-        document.getElementById('loginArea').style.display = 'none';
-        document.getElementById('adminContent').style.display = 'block';
+                document.getElementById('loginArea').style.display = 'none';
+                document.getElementById('adminContent').style.display = 'block';
 
-        const tbody = document.querySelector('#tableSantri tbody');
-        tbody.innerHTML = data.map(s => `
+                const tbody = document.querySelector('#tableSantri tbody');
+                tbody.innerHTML = data.map(s => `
         <tr>
             <td>${s.nama}</td>    
             <td>${s.gender}</td>    
@@ -73,18 +74,18 @@ async function checkAuth(){
             <td>${s.whatsapp}</td>    
         </tr>
         `).join('');
-    }
-}
+            }
+        }
 
-async function logout() {
-    await fetch('/api/logout', {
-        credentials: 'include'
-    });
-    location.reload();
-}
+        async function logout() {
+            await fetch('/api/logout', {
+                credentials: 'include'
+            });
+            location.reload();
+        }
 
-checkAuth();
-</script>
+        checkAuth();
+    </script>
 </body>
 
 </html>
