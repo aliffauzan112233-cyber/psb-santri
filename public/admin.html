@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Admin Santri</title>
 </head>
 
 <body>
@@ -27,6 +27,7 @@
                     <th>Hafalan</th>
                     <th>Wali</th>
                     <th>WhatsAPP</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -38,8 +39,7 @@
             const formData = new FormData();
             formData.append('username', document.getElementById('user').value);
             formData.append('password', document.getElementById('pass').value);
-            console.log('form:', formData);
-            
+
             const res = await fetch('/api/login', {
                 method: 'POST',
                 body: formData,
@@ -66,14 +66,34 @@
 
                 const tbody = document.querySelector('#tableSantri tbody');
                 tbody.innerHTML = data.map(s => `
-        <tr>
-            <td>${s.nama}</td>    
-            <td>${s.gender}</td>    
-            <td>${s.hafalan}</td>    
-            <td>${s.wali}</td>    
-            <td>${s.whatsapp}</td>    
-        </tr>
-        `).join('');
+                    <tr>
+                        <td>${s.nama}</td>    
+                        <td>${s.gender}</td>    
+                        <td>${s.hafalan}</td>    
+                        <td>${s.wali}</td>    
+                        <td>${s.whatsapp}</td>    
+                        <td>
+                            <button onclick="deleteSantri(${s.id})">Hapus</button>
+                        </td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        async function deleteSantri(id) {
+            const confirmDelete = confirm("Yakin mau hapus data ini?");
+            if (!confirmDelete) return;
+
+            const res = await fetch(`/api/admin/santri/${id}`, {
+                method: 'DELETE',
+                credentials: 'include'
+            });
+
+            if (res.ok) {
+                alert("Data berhasil dihapus!");
+                checkAuth(); // refresh data
+            } else {
+                alert("Gagal hapus data!");
             }
         }
 
@@ -83,6 +103,7 @@
             });
             location.reload();
         }
+
 
         checkAuth();
     </script>
