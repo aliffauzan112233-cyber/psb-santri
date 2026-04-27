@@ -1,7 +1,8 @@
+import 'dotenv/config'; // Secara otomatis membaca file .env.
 import { serve } from '@hono/node-server';
 import { serveStatic } from '@hono/node-server/serve-static';// Middleware untuk melayani file statis (seperti .html, .css, .js frontend, atau gambar).
 import { Hono } from 'hono';
-import 'dotenv/config'; // Secara otomatis membaca file .env.
+
 import apiApp from './api/index.js';
 
 // Membuat instance aplikasi baru.
@@ -17,7 +18,7 @@ console.log("Recaptcha secret = ", process.env.RECAPTCHA_SECRET)
 app.use('/*', serveStatic({ root: './public' }));
 
 const port = 3000;
-console.log(`Server running on http://localhost:${port}`);
+console.log(`Server Brunning on http://localhost:${port}`);
 
 serve({
   fetch: app.fetch,

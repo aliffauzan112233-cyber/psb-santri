@@ -3,7 +3,7 @@ import { pgTable, serial, varchar, integer } from "drizzle-orm/pg-core";
 
 export const santri = pgTable('santri', {
     id: serial('id').primaryKey(),
-    nama: varchar('nama', { length: 255 }).notNull(),
+    nama: varchar('nama', { length: 255 }).notNull(),   
     gender: varchar('gender', { length: 20 }).notNull(),
     hafalan: integer('hafalan').default(0),
     wali: varchar('wali', { length: 255 }).notNull(),
