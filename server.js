@@ -14,14 +14,11 @@ app.route('/api', apiApp);
 // untuk memastikan bahwa server berhasil membaca Secret Key reCAPTCHA dari file .env.
 console.log("Recaptcha secret = ", process.env.RECAPTCHA_SECRET)
 
-// Static files (INI PENTING) app.use('/*', ...): Menangani semua request yang tidak cocok dengan route API di atas.
-app.use('/*', serveStatic({ root: './public' }));
-
 const port = 3000;
 console.log(`Server Brunning on http://localhost:${port}`);
 
 serve({
   fetch: app.fetch,
-  port: 3000
+  port: 3001
 });
 
