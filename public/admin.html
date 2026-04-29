@@ -8,6 +8,8 @@
 </head>
 
 <body>
+
+    <!-- LOGIN -->
     <div id="loginArea">
         <h2>Login Admin</h2>
         <input type="text" id="user" placeholder="Username"><br><br>
@@ -15,10 +17,12 @@
         <button onclick="login()">Masuk</button>
     </div>
 
+    <!-- ADMIN -->
     <div id="adminContent" style="display: none;">
         <h2>Data Pendaftaran Santri</h2>
         <button onclick="logout()">Logout</button>
         <hr>
+
         <table border="1" cellpadding="10" id="tableSantri">
             <thead>
                 <tr>
@@ -26,7 +30,7 @@
                     <th>Gender</th>
                     <th>Hafalan</th>
                     <th>Wali</th>
-                    <th>WhatsAPP</th>
+                    <th>WhatsApp</th>
                     <th>Aksi</th>
                 </tr>
             </thead>
@@ -35,6 +39,72 @@
     </div>
 
     <script>
+        //  LOAD DATA 
+        async function loadSantri() {
+            try {
+                const res = await fetch('/api/admin/santri', {
+                    credentials: 'include'
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    document.getElementById('loginArea').style.display = 'block';
+                    document.getElementById('adminContent').style.display = 'none';
+                    return;
+                }
+
+                document.getElementById('loginArea').style.display = 'none';
+                document.getElementById('adminContent').style.display = 'block';
+
+                const tbody = document.querySelector('#tableSantri tbody');
+                tbody.innerHTML = '';
+
+                data.forEach(item => {
+                    const row = `
+                        <tr>
+                            <td>${item.nama}</td>
+                            <td>${item.gender}</td>
+                            <td>${item.hafalan}</td>
+                            <td>${item.wali}</td>
+                            <td>${item.whatsapp}</td>
+                            <td>
+                                <button onclick="deleteSantri(${item.id})">Hapus</button>
+                            </td>
+                        </tr>
+                    `;
+                    tbody.innerHTML += row;
+                });
+
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        //  DELETE 
+        async function deleteSantri(id) {
+            if (!confirm("Yakin mau hapus data ini?")) return;
+
+            try {
+                const res = await fetch(`/api/admin/santri/${id}`, {
+                    method: 'DELETE',
+                    credentials: 'include'
+                });
+
+                const data = await res.json();
+
+                alert(data.message || data.error);
+
+                // reload tabel tanpa refresh page
+                loadSantri();
+
+            } catch (err) {
+                console.error(err);
+                alert("Terjadi error saat menghapus");
+            }
+        }
+
+        //  LOGIN 
         async function login() {
             const formData = new FormData();
             formData.append('username', document.getElementById('user').value);
@@ -46,57 +116,15 @@
                 credentials: 'include'
             });
 
+            const data = await res.json();
+            alert(data.message);
+
             if (res.ok) {
-                checkAuth();
-            } else {
-                alert("Login Gagal!");
+                loadSantri();
             }
         }
 
-        async function checkAuth() {
-            const res = await fetch('/api/admin/santri', {
-                credentials: 'include'
-            });
-
-            if (res.ok) {
-                const data = await res.json();
-
-                document.getElementById('loginArea').style.display = 'none';
-                document.getElementById('adminContent').style.display = 'block';
-
-                const tbody = document.querySelector('#tableSantri tbody');
-                tbody.innerHTML = data.map(s => `
-                    <tr>
-                        <td>${s.nama}</td>    
-                        <td>${s.gender}</td>    
-                        <td>${s.hafalan}</td>    
-                        <td>${s.wali}</td>    
-                        <td>${s.whatsapp}</td>    
-                        <td>
-                            <button onclick="deleteSantri(${s.id})">Hapus</button>
-                        </td>
-                    </tr>
-                `).join('');
-            }
-        }
-
-        async function deleteSantri(id) {
-            const confirmDelete = confirm("Yakin mau hapus data ini?");
-            if (!confirmDelete) return;
-
-            const res = await fetch(`/api/admin/santri/${id}`, {
-                method: 'DELETE',
-                credentials: 'include'
-            });
-
-            if (res.ok) {
-                alert("Data berhasil dihapus!");
-                checkAuth(); // refresh data
-            } else {
-                alert("Gagal hapus data!");
-            }
-        }
-
+        //  LOGOUT 
         async function logout() {
             await fetch('/api/logout', {
                 credentials: 'include'
@@ -104,9 +132,10 @@
             location.reload();
         }
 
-
-        checkAuth();
+        //  INIT 
+        loadSantri();
     </script>
+
 </body>
 
 </html>

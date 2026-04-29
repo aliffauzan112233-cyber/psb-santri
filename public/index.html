@@ -1,102 +1,102 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PSB Santri</title>
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-</head>
-<body>
-    <h1>Formulir Pendaftaran Santri Baru</h1>
-    <p>Silahkan isi data calon santri dengan benar</p>
-    <hr>
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>PSB Santri</title>
+      <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  </head>
+  <body>
+      <h1>Formulir Pendaftaran Santri Baru</h1>
+      <p>Silahkan isi data calon santri dengan benar</p>
+      <hr>
 
-    <form id="formPSB">
-        <div>
-            <label>Nama Lengkap</label><br>
-            <input type="text" name="nama" placeholder="Contoh: Ahmad Fauzi" required>
-        </div><br>
+      <form id="formPSB">
+          <div>
+              <label>Nama Lengkap</label><br>
+              <input type="text" name="nama" placeholder="Contoh: Ahmad Fauzi" required>
+          </div><br>
 
-        <div>
-            <label>Jenis Kelamin</label><br>
-            <select name="gender" required>
-                <option value="">--Pilih--</option>
-                <option value="Ikhwan">Ikhwan (Laki-Laki)</option>
-                <option value="Akhwat">Akhwat (Perempuan)</option>
-            </select>
-        </div><br>
+          <div>
+              <label>Jenis Kelamin</label><br>
+              <select name="gender" required>
+                  <option value="">--Pilih--</option>
+                  <option value="Ikhwan">Ikhwan (Laki-Laki)</option>
+                  <option value="Akhwat">Akhwat (Perempuan)</option>
+              </select>
+          </div><br>
 
-        <div>
-            <label>Jumlah Hafalan</label><br>
-            <input type="number" name="hafalan" value="0" min="0" max="30">
-        </div><br>
+          <div>
+              <label>Jumlah Hafalan</label><br>
+              <input type="number" name="hafalan" value="0" min="0" max="30">
+          </div><br>
 
-        <div>
-            <label>Nama Wali:</label><br>
-            <input type="text" name="wali" placeholder="Nama Ayah/Ibu" required>
-        </div><br>
+          <div>
+              <label>Nama Wali:</label><br>
+              <input type="text" name="wali" placeholder="Nama Ayah/Ibu" required>
+          </div><br>
 
-        <div> 
-          <label>WhatsApp Wali</label><br>
-          <input type="text" name="whatsapp" placeholder="62" required>
-        </div><br>
+          <div> 
+            <label>WhatsApp Wali</label><br>
+            <input type="text" name="whatsapp" placeholder="62" required>
+          </div><br>
 
-        <div class="g-recaptcha" data-sitekey="6Lc_NbgsAAAAAAPzhRwK-j2DstRC5wW3-MdRcAi3"></div>
-        <br>
+          <div class="g-recaptcha" data-sitekey="6Lc_NbgsAAAAAAPzhRwK-j2DstRC5wW3-MdRcAi3"></div>
+          <br>
 
-        <button type="submit" id="btnSubmit">Kirim Pendaftaran</button>
-    </form>
+          <button type="submit" id="btnSubmit">Kirim Pendaftaran</button>
+      </form>
 
-    <h3 id="statusPesan"></h3>
+      <h3 id="statusPesan"></h3>
 
-   <script>
-const form = document.getElementById('formPSB');
-const statusPesan = document.getElementById('statusPesan');
+    <script>
+  const form = document.getElementById('formPSB');
+  const statusPesan = document.getElementById('statusPesan');
 
-form.onsubmit = async (e) => {
-  e.preventDefault();
+  form.onsubmit = async (e) => {
+    e.preventDefault();
 
-  // cek captcha // Sistem mengecek apakah user sudah mencentang Google reCAPTCHA. Jika belum, proses dihentikan dengan perintah return dan muncul peringatan.
-  const captcha = grecaptcha.getResponse();
-  if (!captcha) {
-    alert('Silakan centang CAPTCHA dulu!');
-    return;
-  }
-
-  // Memberikan feedback visual ke user bahwa data sedang dikirim.
-  statusPesan.innerText = "Sedang memproses...";
-  statusPesan.style.color = "blue";
-
-  const formData = new FormData(form); // Secara otomatis mengambil semua nilai input yang ada di dalam form berdasarkan atribut name-nya.
-
-  try {
-    const response = await fetch('http://localhost:3000/api/submit', {
-      method: 'POST', // Menentukan metode pengiriman data.
-      body: formData // Isi paket yang dikirim adalah data form tadi.
-    });
-
-    // Penanganan Respon Server
-    if (!response.ok) {
-      const text = await response.text();
-      throw new Error(text);
+    // cek captcha // Sistem mengecek apakah user sudah mencentang Google reCAPTCHA. Jika belum, proses dihentikan dengan perintah return dan muncul peringatan.
+    const captcha = grecaptcha.getResponse();
+    if (!captcha) {
+      alert('Silakan centang CAPTCHA dulu!');
+      return;
     }
 
-    const hasil = await response.json();
+    // Memberikan feedback visual ke user bahwa data sedang dikirim.
+    statusPesan.innerText = "Sedang memproses...";
+    statusPesan.style.color = "blue";
 
-    // Finalisasi (Sukses atau Gagal)
+    const formData = new FormData(form); // Secara otomatis mengambil semua nilai input yang ada di dalam form berdasarkan atribut name-nya.
 
-    statusPesan.innerText = "Berhasil: " + hasil.message;
-    statusPesan.style.color = "green";
-    form.reset();
-    grecaptcha.reset();
+    try {
+      const response = await fetch('http://localhost:3000/api/submit', {
+        method: 'POST', // Menentukan metode pengiriman data.
+        body: formData // Isi paket yang dikirim adalah data form tadi.
+      });
 
-    window.location.href = 'success.html';
+      // Penanganan Respon Server
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(text);
+      }
 
-  } catch (err) {
-    statusPesan.innerText = "Gagal: " + err.message;
-    statusPesan.style.color = "red";
-  }
-};
-</script>
-</body>
-</html>
+      const hasil = await response.json();
+
+      // Finalisasi (Sukses atau Gagal)
+
+      statusPesan.innerText = "Berhasil: " + hasil.message;
+      statusPesan.style.color = "green";
+      form.reset();
+      grecaptcha.reset();
+
+      window.location.href = 'success.html';
+
+    } catch (err) {
+      statusPesan.innerText = "Gagal: " + err.message;
+      statusPesan.style.color = "red";
+    }
+  };
+  </script>
+  </body>
+  </html>
