@@ -1,141 +1,233 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Santri</title>
+    <title>SANTRI OS | Admin Portal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.8); 
+            backdrop-filter: blur(12px); 
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .gradient-bg {
+            background: radial-gradient(circle at top right, #eef2ff 0%, #f8fafc 50%, #f1f5f9 100%);
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+    </style>
 </head>
+<body class="gradient-bg min-h-screen text-slate-900">
 
-<body>
-
-    <!-- LOGIN -->
-    <div id="loginArea">
-        <h2>Login Admin</h2>
-        <input type="text" id="user" placeholder="Username"><br><br>
-        <input type="password" id="pass" placeholder="Password"><br><br>
-        <button onclick="login()">Masuk</button>
+    <div id="loginArea" class="flex items-center justify-center min-h-screen p-4">
+        <div class="w-full max-w-md bg-white rounded-[2rem] shadow-2xl shadow-indigo-100 p-10 border border-indigo-50">
+            <div class="mb-10 text-center">
+                <div class="inline-flex items-center justify-center w-16 h-16 bg-indigo-600 rounded-2xl shadow-lg shadow-indigo-200 mb-4">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                </div>
+                <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">Selamat Datang</h2>
+                <p class="text-slate-500 mt-2 font-medium">Portal Administrasi Santri Baru</p>
+            </div>
+            
+            <div class="space-y-5">
+                <div class="group">
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Username</label>
+                    <input type="text" id="user" placeholder="admin_santri" 
+                        class="w-full px-5 py-4 rounded-xl bg-slate-50 border-2 border-transparent focus:border-indigo-500 focus:bg-white outline-none transition-all duration-300">
+                </div>
+                <div class="group">
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2 ml-1">Password</label>
+                    <input type="password" id="pass" placeholder="••••••••" 
+                        class="w-full px-5 py-4 rounded-xl bg-slate-50 border-2 border-transparent focus:border-indigo-500 focus:bg-white outline-none transition-all duration-300">
+                </div>
+                <button onclick="login()" 
+                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-xl shadow-xl shadow-indigo-200 transition-all active:scale-95 flex items-center justify-center gap-2">
+                    Masuk Sekarang
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path></svg>
+                </button>
+            </div>
+        </div>
     </div>
 
-    <!-- ADMIN -->
-    <div id="adminContent" style="display: none;">
-        <h2>Data Pendaftaran Santri</h2>
-        <button onclick="logout()">Logout</button>
-        <hr>
+    <div id="adminContent" class="hidden min-h-screen pb-12">
+        <nav class="glass-card sticky top-0 z-30 px-6 py-4 mb-8">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <div class="flex items-center gap-4">
+                    <div class="bg-indigo-600 p-2 rounded-xl shadow-md">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-extrabold text-slate-900 leading-none">SANTRI OS</h1>
+                        <span class="text-[10px] font-bold text-indigo-500 tracking-[0.2em] uppercase">Control Panel</span>
+                    </div>
+                </div>
+                <div class="flex items-center gap-6">
+                    <div class="hidden md:block text-right">
+                        <p class="text-sm font-bold text-slate-900">Alif Fauzan</p>
+                        <p class="text-[10px] text-slate-500 font-medium">Administrator Utama</p>
+                    </div>
+                    <button onclick="logout()" class="p-2 hover:bg-red-50 text-red-500 rounded-xl transition-colors group">
+                        <svg class="w-6 h-6 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
 
-        <table border="1" cellpadding="10" id="tableSantri">
-            <thead>
-                <tr>
-                    <th>Nama</th>
-                    <th>Gender</th>
-                    <th>Hafalan</th>
-                    <th>Wali</th>
-                    <th>WhatsApp</th>
-                    <th>Aksi</th>
-                </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+        <main class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex items-center gap-5">
+                    <div class="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.34-1.7l-1.13 1.13a3.33 3.33 0 01-4.8 0L9.6 16.3A3 3 0 004 18v2h5"></path></svg>
+                    </div>
+                    <div>
+                        <p class="text-slate-500 text-sm font-semibold">Total Pendaftar</p>
+                        <h3 class="text-2xl font-extrabold text-slate-900" id="statTotal">--</h3>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex items-center gap-5">
+                    <div class="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <div>
+                        <p class="text-slate-500 text-sm font-semibold">Rata-rata Hafalan</p>
+                        <h3 class="text-2xl font-extrabold text-slate-900" id="statHafalan">--</h3>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100 flex items-center gap-5">
+                    <div class="w-14 h-14 bg-amber-50 rounded-2xl flex items-center justify-center text-amber-600">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <div>
+                        <p class="text-slate-500 text-sm font-semibold">Pendaftar Hari Ini</p>
+                        <h3 class="text-2xl font-extrabold text-slate-900">--</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-[2.5rem] shadow-xl shadow-slate-200/50 border border-slate-100 overflow-hidden">
+                <div class="px-8 py-6 border-b border-slate-50 flex flex-col md:flex-row justify-between items-center gap-4">
+                    <h2 class="text-xl font-extrabold text-slate-900">Database Santri Baru</h2>
+                    <div class="flex gap-2">
+                        <input type="text" placeholder="Cari nama santri..." class="px-4 py-2 bg-slate-50 border-none rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-100 w-64 transition-all">
+                        <button class="bg-indigo-50 text-indigo-600 p-2 rounded-xl">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto custom-scrollbar">
+                    <table class="w-full text-left" id="tableSantri">
+                        <thead>
+                            <tr class="text-[11px] font-bold text-slate-400 uppercase tracking-[0.2em] bg-slate-50/50">
+                                <th class="px-8 py-5">Identitas Santri</th>
+                                <th class="px-8 py-5">Gender</th>
+                                <th class="px-8 py-5">Hafalan</th>
+                                <th class="px-8 py-5">Kontak Wali</th>
+                                <th class="px-8 py-5 text-center">Tindakan</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-50">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
     </div>
 
     <script>
-        //  LOAD DATA 
+        // Logika Load Data
         async function loadSantri() {
             try {
-                const res = await fetch('/api/admin/santri', {
-                    credentials: 'include'
-                });
-
+                const res = await fetch('/api/admin/santri', { credentials: 'include' });
                 const data = await res.json();
 
                 if (!res.ok) {
-                    document.getElementById('loginArea').style.display = 'block';
-                    document.getElementById('adminContent').style.display = 'none';
+                    document.getElementById('loginArea').classList.remove('hidden');
+                    document.getElementById('adminContent').classList.add('hidden');
                     return;
                 }
 
-                document.getElementById('loginArea').style.display = 'none';
-                document.getElementById('adminContent').style.display = 'block';
+                document.getElementById('loginArea').classList.add('hidden');
+                document.getElementById('adminContent').classList.remove('hidden');
+
+                // Update Stats
+                document.getElementById('statTotal').innerText = data.length;
+                const avgHafalan = data.length > 0 ? (data.reduce((acc, curr) => acc + parseInt(curr.hafalan), 0) / data.length).toFixed(1) : 0;
+                document.getElementById('statHafalan').innerText = `${avgHafalan} Juz`;
 
                 const tbody = document.querySelector('#tableSantri tbody');
                 tbody.innerHTML = '';
 
                 data.forEach(item => {
                     const row = `
-                        <tr>
-                            <td>${item.nama}</td>
-                            <td>${item.gender}</td>
-                            <td>${item.hafalan}</td>
-                            <td>${item.wali}</td>
-                            <td>${item.whatsapp}</td>
-                            <td>
-                                <button onclick="deleteSantri(${item.id})">Hapus</button>
+                        <tr class="hover:bg-slate-50/80 transition-all duration-200 group">
+                            <td class="px-8 py-6">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center font-bold text-indigo-600 text-sm">
+                                        ${item.nama.charAt(0)}
+                                    </div>
+                                    <div>
+                                        <p class="font-bold text-slate-900">${item.nama}</p>
+                                        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-tighter">SANTRI ID: #${1000 + item.id}</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-8 py-6">
+                                <span class="px-4 py-1.5 rounded-full text-[11px] font-extrabold uppercase tracking-wider ${item.gender === 'Pria' ? 'bg-blue-50 text-blue-600' : 'bg-rose-50 text-rose-600'}">
+                                    ${item.gender}
+                                </span>
+                            </td>
+                            <td class="px-8 py-6">
+                                <div class="flex flex-col">
+                                    <span class="text-sm font-bold text-slate-700">${item.hafalan} Juz</span>
+                                    <div class="w-24 h-1.5 bg-slate-100 rounded-full mt-1 overflow-hidden">
+                                        <div class="bg-emerald-500 h-full" style="width: ${(item.hafalan/30)*100}%"></div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-8 py-6">
+                                <p class="text-sm font-bold text-slate-900">${item.wali}</p>
+                                <a href="https://wa.me/${item.whatsapp}" target="_blank" class="text-xs font-semibold text-indigo-500 hover:text-indigo-700 flex items-center gap-1 mt-0.5">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.588-5.946 0-6.556 5.332-11.888 11.888-11.888 3.176 0 6.165 1.237 8.413 3.484 2.247 2.247 3.484 5.236 3.484 8.412 0 6.556-5.332 11.888-11.888 11.888-2.01 0-3.986-.511-5.741-1.483l-6.255 1.696zm6.262-3.61c1.554.921 3.411 1.408 5.312 1.408 5.751 0 10.43-4.678 10.43-10.43 0-2.785-1.084-5.405-3.052-7.373s-4.588-3.052-7.373-3.052c-5.751 0-10.43 4.678-10.43 10.43 0 1.954.545 3.857 1.579 5.513l-.999 3.649 3.734-.999z"/></svg>
+                                    ${item.whatsapp}
+                                </a>
+                            </td>
+                            <td class="px-8 py-6 text-center">
+                                <button onclick="deleteSantri(${item.id})" class="inline-flex items-center justify-center w-9 h-9 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-xl transition-all">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                                </button>
                             </td>
                         </tr>
                     `;
                     tbody.innerHTML += row;
                 });
-
-            } catch (err) {
-                console.error(err);
-            }
+            } catch (err) { console.error(err); }
         }
 
-        //  DELETE 
-        async function deleteSantri(id) {
-            if (!confirm("Yakin mau hapus data ini?")) return;
-
-            try {
-                const res = await fetch(`/api/admin/santri/${id}`, {
-                    method: 'DELETE',
-                    credentials: 'include'
-                });
-
-                const data = await res.json();
-
-                alert(data.message || data.error);
-
-                // reload tabel tanpa refresh page
-                loadSantri();
-
-            } catch (err) {
-                console.error(err);
-                alert("Terjadi error saat menghapus");
-            }
-        }
-
-        //  LOGIN 
         async function login() {
             const formData = new FormData();
             formData.append('username', document.getElementById('user').value);
             formData.append('password', document.getElementById('pass').value);
-
-            const res = await fetch('/api/login', {
-                method: 'POST',
-                body: formData,
-                credentials: 'include'
-            });
-
-            const data = await res.json();
-            alert(data.message);
-
-            if (res.ok) {
-                loadSantri();
-            }
+            const res = await fetch('/api/login', { method: 'POST', body: formData, credentials: 'include' });
+            if (res.ok) { loadSantri(); } else { alert("Gagal Login"); }
         }
 
-        //  LOGOUT 
+        async function deleteSantri(id) {
+            if (!confirm("Hapus data santri ini?")) return;
+            await fetch(`/api/admin/santri/${id}`, { method: 'DELETE', credentials: 'include' });
+            loadSantri();
+        }
+
         async function logout() {
-            await fetch('/api/logout', {
-                credentials: 'include'
-            });
+            await fetch('/api/logout', { credentials: 'include' });
             location.reload();
         }
 
-        //  INIT 
         loadSantri();
     </script>
-
 </body>
-
 </html>

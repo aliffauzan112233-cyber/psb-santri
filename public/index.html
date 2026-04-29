@@ -1,102 +1,171 @@
-  <!DOCTYPE html>
-  <html lang="en">
-  <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>PSB Santri</title>
-      <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-  </head>
-  <body>
-      <h1>Formulir Pendaftaran Santri Baru</h1>
-      <p>Silahkan isi data calon santri dengan benar</p>
-      <hr>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pendaftaran Santri Baru | Portal PSB</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .blob-bg {
+            background-color: #f8fafc;
+            background-image: radial-gradient(at 0% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                              radial-gradient(at 100% 100%, rgba(45, 212, 191, 0.15) 0px, transparent 50%);
+        }
+    </style>
+</head>
+<body class="blob-bg min-h-screen flex flex-col items-center justify-center p-4 md:p-8">
 
-      <form id="formPSB">
-          <div>
-              <label>Nama Lengkap</label><br>
-              <input type="text" name="nama" placeholder="Contoh: Ahmad Fauzi" required>
-          </div><br>
+    <div class="w-full max-w-2xl bg-white/80 backdrop-blur-xl rounded-[2.5rem] shadow-2xl shadow-indigo-100/50 border border-white overflow-hidden">
+        
+        <div class="relative h-48 bg-indigo-600 flex items-center justify-center overflow-hidden">
+            <div class="absolute inset-0 opacity-20">
+                <svg viewBox="0 0 100 100" preserveAspectRatio="none" class="h-full w-full fill-white">
+                    <path d="M0 0 L100 0 L100 100 L0 100 Z" />
+                </svg>
+            </div>
+            <div class="relative text-center px-6">
+                <h1 class="text-3xl md:text-4xl font-extrabold text-white tracking-tight">PSB Online</h1>
+                <p class="text-indigo-100 mt-2 font-medium">Bergabunglah bersama kami menjadi generasi Qurani</p>
+            </div>
+        </div>
 
-          <div>
-              <label>Jenis Kelamin</label><br>
-              <select name="gender" required>
-                  <option value="">--Pilih--</option>
-                  <option value="Ikhwan">Ikhwan (Laki-Laki)</option>
-                  <option value="Akhwat">Akhwat (Perempuan)</option>
-              </select>
-          </div><br>
+        <div class="p-8 md:p-12">
+            <div class="mb-10">
+                <h2 class="text-xl font-bold text-slate-800">Formulir Pendaftaran</h2>
+                <p class="text-slate-500 text-sm">Lengkapi data di bawah ini dengan informasi yang valid.</p>
+            </div>
 
-          <div>
-              <label>Jumlah Hafalan</label><br>
-              <input type="number" name="hafalan" value="0" min="0" max="30">
-          </div><br>
+            <form id="formPSB" class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-slate-700 ml-1">Nama Lengkap Santri</label>
+                        <input type="text" name="nama" placeholder="Contoh: Ahmad Fauzi" required
+                            class="w-full px-5 py-3.5 rounded-2xl bg-slate-50 border-2 border-transparent focus:border-indigo-500 focus:bg-white outline-none transition-all">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-slate-700 ml-1">Jenis Kelamin</label>
+                        <select name="gender" required
+                            class="w-full px-5 py-3.5 rounded-2xl bg-slate-50 border-2 border-transparent focus:border-indigo-500 focus:bg-white outline-none transition-all appearance-none cursor-pointer">
+                            <option value="">-- Pilih --</option>
+                            <option value="Ikhwan">Ikhwan (Laki-Laki)</option>
+                            <option value="Akhwat">Akhwat (Perempuan)</option>
+                        </select>
+                    </div>
+                </div>
 
-          <div>
-              <label>Nama Wali:</label><br>
-              <input type="text" name="wali" placeholder="Nama Ayah/Ibu" required>
-          </div><br>
+                <div class="space-y-2">
+                    <label class="text-sm font-bold text-slate-700 ml-1">Jumlah Hafalan (Juz)</label>
+                    <div class="relative flex items-center">
+                        <input type="number" name="hafalan" value="0" min="0" max="30"
+                            class="w-full px-5 py-3.5 rounded-2xl bg-slate-50 border-2 border-transparent focus:border-indigo-500 focus:bg-white outline-none transition-all">
+                        <span class="absolute right-5 text-slate-400 font-bold text-sm tracking-widest">x`</span>
+                    </div>
+                </div>
 
-          <div> 
-            <label>WhatsApp Wali</label><br>
-            <input type="text" name="whatsapp" placeholder="62" required>
-          </div><br>
+                <hr class="border-slate-100 my-8">
 
-          <div class="g-recaptcha" data-sitekey="6Lc_NbgsAAAAAAPzhRwK-j2DstRC5wW3-MdRcAi3"></div>
-          <br>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-slate-700 ml-1">Nama Wali</label>
+                        <input type="text" name="wali" placeholder="Nama Ayah/Ibu" required
+                            class="w-full px-5 py-3.5 rounded-2xl bg-slate-50 border-2 border-transparent focus:border-indigo-500 focus:bg-white outline-none transition-all">
+                    </div>
+                    <div class="space-y-2">
+                        <label class="text-sm font-bold text-slate-700 ml-1">WhatsApp Wali</label>
+                        <div class="relative">
+                            <span class="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400 font-bold text-sm">+</span>
+                            <input type="text" name="whatsapp" placeholder="628123456xxx" required
+                                class="w-full pl-8 pr-5 py-3.5 rounded-2xl bg-slate-50 border-2 border-transparent focus:border-indigo-500 focus:bg-white outline-none transition-all font-medium">
+                        </div>
+                    </div>
+                </div>
 
-          <button type="submit" id="btnSubmit">Kirim Pendaftaran</button>
-      </form>
+                <div class="flex justify-center py-4">
+                    <div class="g-recaptcha" data-sitekey="6Lc_NbgsAAAAAAPzhRwK-j2DstRC5wW3-MdRcAi3"></div>
+                </div>
 
-      <h3 id="statusPesan"></h3>
+                <button type="submit" id="btnSubmit" 
+                    class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold py-4 rounded-2xl shadow-xl shadow-indigo-200 transition-all active:scale-[0.98] flex items-center justify-center gap-3">
+                    <span id="btnText">Kirim Pendaftaran</span>
+                    <svg id="loadingIcon" class="hidden w-5 h-5 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                </button>
+            </form>
+
+            <div id="statusArea" class="mt-6 text-center hidden">
+                <p id="statusPesan" class="text-sm font-bold"></p>
+            </div>
+        </div>
+    </div>
+
+    <footer class="mt-8 text-slate-400 text-xs font-medium tracking-widest uppercase">
+        &copy; 2026 PSB SANTRI
+    </footer>
 
     <script>
-  const form = document.getElementById('formPSB');
-  const statusPesan = document.getElementById('statusPesan');
+        const form = document.getElementById('formPSB');
+        const statusArea = document.getElementById('statusArea');
+        const statusPesan = document.getElementById('statusPesan');
+        const btnSubmit = document.getElementById('btnSubmit');
+        const btnText = document.getElementById('btnText');
+        const loadingIcon = document.getElementById('loadingIcon');
 
-  form.onsubmit = async (e) => {
-    e.preventDefault();
+        form.onsubmit = async (e) => {
+            e.preventDefault();
 
-    // cek captcha // Sistem mengecek apakah user sudah mencentang Google reCAPTCHA. Jika belum, proses dihentikan dengan perintah return dan muncul peringatan.
-    const captcha = grecaptcha.getResponse();
-    if (!captcha) {
-      alert('Silakan centang CAPTCHA dulu!');
-      return;
-    }
+            const captcha = grecaptcha.getResponse();
+            if (!captcha) {
+                alert('Silakan centang CAPTCHA dulu ya!');
+                return;
+            }
 
-    // Memberikan feedback visual ke user bahwa data sedang dikirim.
-    statusPesan.innerText = "Sedang memproses...";
-    statusPesan.style.color = "blue";
+            // UI Loading State
+            btnSubmit.disabled = true;
+            btnSubmit.classList.add('opacity-80', 'cursor-not-allowed');
+            btnText.innerText = "Memproses...";
+            loadingIcon.classList.remove('hidden');
+            statusArea.classList.remove('hidden');
+            statusPesan.innerText = "Sedang mengirim data...";
+            statusPesan.className = "text-sm font-bold text-indigo-500";
 
-    const formData = new FormData(form); // Secara otomatis mengambil semua nilai input yang ada di dalam form berdasarkan atribut name-nya.
+            const formData = new FormData(form);
 
-    try {
-      const response = await fetch('http://localhost:3000/api/submit', {
-        method: 'POST', // Menentukan metode pengiriman data.
-        body: formData // Isi paket yang dikirim adalah data form tadi.
-      });
+            try {
+                const response = await fetch('http://localhost:3000/api/submit', {
+                    method: 'POST',
+                    body: formData
+                });
 
-      // Penanganan Respon Server
-      if (!response.ok) {
-        const text = await response.text();
-        throw new Error(text);
-      }
+                if (!response.ok) {
+                    const text = await response.text();
+                    throw new Error(text);
+                }
 
-      const hasil = await response.json();
+                const hasil = await response.json();
 
-      // Finalisasi (Sukses atau Gagal)
+                statusPesan.innerText = "Sukses! " + hasil.message;
+                statusPesan.className = "text-sm font-bold text-emerald-500";
+                form.reset();
+                grecaptcha.reset();
 
-      statusPesan.innerText = "Berhasil: " + hasil.message;
-      statusPesan.style.color = "green";
-      form.reset();
-      grecaptcha.reset();
+                // Delay sedikit agar user bisa lihat pesan sukses
+                setTimeout(() => {
+                    window.location.href = 'success.html';
+                }, 2000);
 
-      window.location.href = 'success.html';
-
-    } catch (err) {
-      statusPesan.innerText = "Gagal: " + err.message;
-      statusPesan.style.color = "red";
-    }
-  };
-  </script>
-  </body>
-  </html>
+            } catch (err) {
+                statusPesan.innerText = "Waduh! Gagal: " + err.message;
+                statusPesan.className = "text-sm font-bold text-rose-500";
+                
+                // Reset button
+                btnSubmit.disabled = false;
+                btnSubmit.classList.remove('opacity-80', 'cursor-not-allowed');
+                btnText.innerText = "Kirim Pendaftaran";
+                loadingIcon.classList.add('hidden');
+            }
+        };
+    </script>
+</body>
+</html>
